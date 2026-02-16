@@ -1,0 +1,227 @@
+/* 日记伴侣样式 */
+
+.diary-pal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 500px;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 头部 */
+.diary-pal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  flex-shrink: 0;
+}
+
+.diary-pal-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.diary-pal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* 消息区域 */
+.diary-pal-messages {
+  flex: 1;
+  min-height: 200px;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.diary-pal-message {
+  display: flex;
+  max-width: 90%;
+}
+
+.diary-pal-assistant {
+  align-self: flex-start;
+}
+
+.diary-pal-user {
+  align-self: flex-end;
+}
+
+.diary-pal-error {
+  align-self: center;
+}
+
+.diary-pal-bubble {
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.diary-pal-assistant .diary-pal-bubble {
+  background: var(--background-secondary);
+  color: var(--text-normal);
+}
+
+.diary-pal-user .diary-pal-bubble {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.diary-pal-error .diary-pal-bubble {
+  background: rgba(200, 0, 0, 0.1);
+  border: 1px solid rgba(200, 0, 0, 0.3);
+  color: var(--text-normal);
+}
+
+/* 日记预览 */
+.diary-pal-preview {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.diary-pal-preview p {
+  margin: 8px 0;
+}
+
+.diary-pal-preview p:first-child {
+  margin-top: 0;
+}
+
+.diary-pal-preview p:last-child {
+  margin-bottom: 0;
+}
+
+/* 输入区域 */
+.diary-pal-input-container {
+  padding: 20px 20px 32px 20px;
+  border-top: 1px solid var(--background-modifier-border);
+  background: var(--background-primary);
+  flex-shrink: 0;
+  min-height: 220px;
+}
+
+.diary-pal-textarea {
+  width: 100%;
+  min-height: 120px;
+  max-height: 240px;
+  padding: 14px 16px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 10px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 15px;
+  line-height: 1.6;
+  resize: vertical;
+  font-family: inherit;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.diary-pal-textarea:focus {
+  outline: none;
+  border-color: var(--interactive-accent);
+}
+
+.diary-pal-edit-area {
+  min-height: 150px;
+  font-family: var(--font-monospace);
+}
+
+/* 按钮 */
+.diary-pal-button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-bottom: 16px;
+}
+
+.diary-pal-btn {
+  padding: 10px 24px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.diary-pal-btn:hover {
+  background: var(--background-modifier-hover);
+}
+
+.diary-pal-btn-primary {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-color: var(--interactive-accent);
+}
+
+.diary-pal-btn-primary:hover {
+  background: var(--interactive-accent-hover);
+}
+
+.diary-pal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 加载状态 */
+.diary-pal-loading {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  padding: 16px;
+}
+
+.diary-pal-loading::after {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 10px;
+  border: 2px solid var(--text-muted);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: diary-pal-spin 1s linear infinite;
+}
+
+@keyframes diary-pal-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 滚动条美化 */
+.diary-pal-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.diary-pal-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.diary-pal-messages::-webkit-scrollbar-thumb {
+  background: var(--background-modifier-border);
+  border-radius: 3px;
+}
+
+.diary-pal-messages::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
