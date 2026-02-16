@@ -170,7 +170,12 @@ export default class DiaryPalPlugin extends Plugin {
 
   // 生成日记文件名
   generateFileName(coreSentence: string): string {
-    const dateStr = moment().format('YYYY-MM-DD');
+    // 使用本地日期（电脑系统时间）
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
     // 清理核心句，移除非法字符
     const cleanSentence = coreSentence
       .replace(/[<>:"/\\|?*]/g, '')       // 移除非法字符

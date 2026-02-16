@@ -19,6 +19,7 @@ export const zh = {
   'button.resume': '继续分析',
   'button.discard': '放弃进度',
   'button.test': '测试连接',
+  'button.settings': '打开设置',
 
   // 消息
   'message.welcome': '嗨，准备写今天的日记了吗？点击下面的按钮开始吧。',
@@ -36,6 +37,8 @@ export const zh = {
   'message.restartRequired': '语言已更改，请重启 Obsidian 生效',
   'message.inputPlaceholder': '输入你的回答...（支持多行，可拖动调节高度）',
   'message.resetConfirm': '确定要重置为默认文风吗？这将丢失当前的自定义内容。',
+  'message.noStyle': '⚠️ 还没有分析你的写作风格。请先前往设置 → 文风分析，分析至少一篇日记以获得更好的生成效果。',
+  'message.noApiConfig': '⚠️ 大模型 API 未配置。请前往设置 → Diary Pal，配置 API Key 并测试连通性。',
 
   // 标签
   'label.lastAnalyzed': '上次分析时间',

@@ -225,6 +225,19 @@ export class DiaryPalView extends ItemView {
 
   private showStartButton() {
     this.inputContainer.empty();
+    
+    // 检查 API 是否配置
+    if (!this.plugin.settings.apiKey) {
+      this.showConfigPrompt(i18n.t('message.noApiConfig'));
+      return;
+    }
+    
+    // 检查是否已分析文风
+    if (!this.plugin.settings.analyzedStyle) {
+      this.showConfigPrompt(i18n.t('message.noStyle'));
+      return;
+    }
+    
     const buttonRow = this.inputContainer.createDiv('diary-pal-button-row');
     
     const startBtn = buttonRow.createEl('button', {
@@ -236,6 +249,37 @@ export class DiaryPalView extends ItemView {
     startBtn.addEventListener('click', async () => {
       this.inputContainer.empty();
       await this.askQuestion();
+    });
+  }
+  
+  private showConfigPrompt(message: string) {
+    this.inputContainer.empty();
+    const promptDiv = this.inputContainer.createDiv();
+    promptDiv.style.padding = '15px';
+    promptDiv.style.backgroundColor = 'var(--background-secondary)';
+    promptDiv.style.borderRadius = '8px';
+    promptDiv.style.marginBottom = '10px';
+    
+    const promptText = promptDiv.createEl('p');
+    promptText.textContent = message;
+    promptText.style.margin = '0';
+    promptText.style.fontSize = '14px';
+    promptText.style.lineHeight = '1.6';
+    
+    const btnRow = promptDiv.createDiv();
+    btnRow.style.display = 'flex';
+    btnRow.style.gap = '10px';
+    btnRow.style.marginTop = '15px';
+    
+    const settingsBtn = btnRow.createEl('button', {
+      text: i18n.t('button.settings') || '打开设置',
+      cls: 'diary-pal-btn diary-pal-btn-primary'
+    });
+    settingsBtn.addEventListener('click', () => {
+      // @ts-ignore
+      this.app.setting.open();
+      // @ts-ignore
+      this.app.setting.openTabById('diary-pal');
     });
   }
 

@@ -19,6 +19,7 @@ export const en = {
   'button.resume': 'Resume',
   'button.discard': 'Discard',
   'button.test': 'Test Connection',
+  'button.settings': 'Open Settings',
 
   // Messages
   'message.welcome': 'Hey, ready to write today\'s diary? Click the button below to start.',
@@ -36,6 +37,8 @@ export const en = {
   'message.restartRequired': 'Language changed. Please restart Obsidian to apply.',
   'message.inputPlaceholder': 'Enter your answer... (supports multi-line, drag to resize)',
   'message.resetConfirm': 'Reset to default writing style? This will lose your custom content.',
+  'message.noStyle': '⚠️ Writing style not analyzed yet. Please go to Settings → Diary Pal → Writing Style Analysis to analyze at least one diary for better results.',
+  'message.noApiConfig': '⚠️ LLM API not configured. Please go to Settings → Diary Pal to configure API Key and test connectivity.',
 
   // Labels
   'label.lastAnalyzed': 'Last analyzed',
