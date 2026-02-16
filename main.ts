@@ -103,12 +103,9 @@ export default class DiaryPalPlugin extends Plugin {
 
     // 添加设置页
     this.addSettingTab(new DiaryPalSettingTab(this.app, this));
-
-    console.log('Diary Pal 插件已加载');
   }
 
   onunload() {
-    console.log('Diary Pal 插件已卸载');
   }
 
   async loadSettings() {
@@ -196,18 +193,19 @@ export default class DiaryPalPlugin extends Plugin {
     const fileName = this.generateFileName(coreSentence);
     const filePath = normalizePath(`${folder}/${fileName}`);
 
-    // 确保文件夹存在
-    const folderExists = await this.app.vault.adapter.exists(folder);
-    if (!folderExists) {
+    // 确保文件夹存在（使用 Vault API 检查）
+    const folderObj = this.app.vault.getAbstractFileByPath(folder);
+    if (!folderObj) {
       await this.app.vault.createFolder(folder);
     }
 
     // 检查文件是否已存在
     const existingFile = this.app.vault.getAbstractFileByPath(filePath);
     if (existingFile instanceof TFile) {
-      // 追加内容
-      const existingContent = await this.app.vault.read(existingFile);
-      await this.app.vault.modify(existingFile, existingContent + '\n\n---\n\n' + content);
+      // 使用 Vault.process 原子性追加内容
+      await this.app.vault.process(existingFile, (currentContent) => {
+        return currentContent + '\n\n---\n\n' + content;
+      });
     } else {
       // 创建新文件
       await this.app.vault.create(filePath, content);
@@ -232,8 +230,6 @@ class DiaryPalSettingTab extends PluginSettingTab {
   display(): void {
     const { containerEl } = this;
     containerEl.empty();
-
-    containerEl.createEl('h2', { text: i18n.t('plugin.name') });
 
     // ===== LLM 配置区域 =====
     containerEl.createEl('h3', { text: i18n.t('setting.llmProvider') });
@@ -670,9 +666,9 @@ class DiaryPalSettingTab extends PluginSettingTab {
     const fileName = 'writing-style.md';
     const filePath = normalizePath(`${folder}/${fileName}`);
 
-    // 确保文件夹存在
-    const folderExists = await this.plugin.app.vault.adapter.exists(folder);
-    if (!folderExists) {
+    // 确保文件夹存在（使用 Vault API 检查）
+    const folderObj = this.plugin.app.vault.getAbstractFileByPath(folder);
+    if (!folderObj) {
       await this.plugin.app.vault.createFolder(folder);
     }
 
@@ -691,7 +687,7 @@ ${this.plugin.settings.soulContent}
 
     const existingFile = this.plugin.app.vault.getAbstractFileByPath(filePath);
     if (existingFile instanceof TFile) {
-      await this.plugin.app.vault.modify(existingFile, content);
+      await this.plugin.app.vault.process(existingFile, () => content);
     } else {
       await this.plugin.app.vault.create(filePath, content);
     }
