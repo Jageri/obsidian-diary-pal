@@ -1,7 +1,7 @@
 {
   "id": "diary-pal",
   "name": "Diary Pal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minAppVersion": "0.15.0",
   "description": "AI-powered diary writing assistant with interview-style questioning and style learning",
   "author": "Allen",
