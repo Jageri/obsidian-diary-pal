@@ -23,3 +23,8 @@ Thumbs.db
 # 临时文件
 *.tmp
 .temp/
+
+# 开发/发布文档（内部使用）
+PUBLISH-CHECKLIST.md
+QA-TEST-REPORT.md
+RELEASE-NOTES.md
