@@ -286,22 +286,26 @@ export class DiaryPalView extends ItemView {
   private async askQuestion() {
     if (this.isGenerating) return;
     
-    this.currentRound++;
-    const totalRounds = this.plugin.settings.questionRounds;
-    const extendedRounds = Math.floor(totalRounds * 1.5); // 1.5倍轮次
-    
     this.isGenerating = true;
     this.showLoading(i18n.t('status.thinking'));
 
     try {
       const styleDescription = await this.plugin.getWritingStyle();
       
+      // 获取当前轮次（用于提示词）
+      const nextRound = this.currentRound + 1;
+      const totalRounds = this.plugin.settings.questionRounds;
+      
       const question = await this.llmClient.generateQuestion(
         styleDescription,
-        this.currentRound,
+        nextRound,
         totalRounds,
         this.conversationHistory.map(h => h.answer)
       );
+
+      // API 成功后才增加计数
+      this.currentRound = nextRound;
+      await this.saveSession();
 
       this.hideLoading();
       this.addMessage('assistant', question);
@@ -361,16 +365,22 @@ export class DiaryPalView extends ItemView {
     this.inputContainer.empty();
 
     const totalRounds = this.plugin.settings.questionRounds;
-    const extendedRounds = Math.floor(totalRounds * 1.5);
-
-    // 超过基础轮次但还没到1.5倍，温和提示
-    if (this.currentRound >= totalRounds && this.currentRound < extendedRounds) {
-      this.addMessage('assistant', i18n.t('message.basicDone'));
+    
+    // 只在 n, 2n, 4n 轮次提示结束，之后不再提示
+    if (this.currentRound === totalRounds || 
+        this.currentRound === totalRounds * 2 || 
+        this.currentRound === totalRounds * 4) {
+      if (this.currentRound === totalRounds) {
+        // 第一轮结束提示（温和）
+        this.addMessage('assistant', i18n.t('message.basicDone', { current: this.currentRound, total: totalRounds }));
+      } else if (this.currentRound === totalRounds * 2) {
+        // 第二轮结束提示（更主动）
+        this.addMessage('assistant', i18n.t('message.enoughChat', { current: this.currentRound }));
+      } else {
+        // 4n 轮次，最后一次提示
+        this.addMessage('assistant', i18n.t('message.lastChance', { current: this.currentRound }));
+      }
       this.showContinueOrFinish();
-    } else if (this.currentRound >= extendedRounds) {
-      // 超过1.5倍，主动提示结束
-      this.addMessage('assistant', i18n.t('message.enoughChat'));
-      this.showFinishOptions();
     } else {
       await this.askQuestion();
     }
